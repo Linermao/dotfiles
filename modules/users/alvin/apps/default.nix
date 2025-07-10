@@ -9,5 +9,6 @@
     ./fish.nix
     ./git.nix
     ./kitty.nix
+    ./clash.nix
   ];
 }
