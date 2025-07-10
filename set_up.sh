@@ -53,5 +53,14 @@ mount /dev/nvme0n1p1 /mnt/boot
 # make swapon
 swapon /dev/nvme0n1p3
 
+# generate hardware-configuration
+nixos-generate-config --root /mnt
+
+# change this path to nixos/
+cp /mnt/etc/nixos/hardware-configuration.nix ./hosts/desktop/hardware-configuration.nix
+
+# copy current configuration to mnt
+cp ./* /mnt/nixos/
+
 # install nixos using flake
 nixos-install --flake .#desktop --root /mnt --show-trace --option substituters https://mirror.sjtu.edu.cn/nix-channels/store

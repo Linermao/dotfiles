@@ -1,0 +1,1 @@
+home-manager switch --flake .#alvin@desktop --option substituters https://mirror.sjtu.edu.cn/nix-channels/store
