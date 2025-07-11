@@ -17,6 +17,8 @@ end
 
 set fish_pager_color_prefix cyan
 set -g fish_autosuggestion_enabled 0
+set -Ux http_proxy http://127.0.0.1:7890
+set -Ux https_proxy http://127.0.0.1:7890
 
 # Handy change dir shortcuts
 abbr .. 'cd ..'

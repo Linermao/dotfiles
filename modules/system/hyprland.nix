@@ -10,4 +10,9 @@
     enable = true;
     extraPortals = with pkgs; [ xdg-desktop-portal-hyprland ];
   };
+
+  environment.systemPackages = with pkgs; [
+    wl-clipboard
+    wayclip
+  ];
 }

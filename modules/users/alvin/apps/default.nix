@@ -10,5 +10,8 @@
     ./git.nix
     ./kitty.nix
     ./clash.nix
+    ./nvim.nix
+    ./compiler.nix
+    ./code.nix
   ];
 }
