@@ -13,5 +13,6 @@
     ./nvim.nix
     ./compiler.nix
     ./code.nix
+    ./steam.nix
   ];
 }

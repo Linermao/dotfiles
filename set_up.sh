@@ -1,66 +1,128 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
+set -euo pipefail
 
-# ******* this will erase all data *******
-wipefs -a /dev/nvme0n1
-dd if=/dev/zero of=/dev/nvme0n1 bs=1M count=10 status=progress
+# Select host
+echo "[0] Detecting available hosts in ./hosts/..."
+host_dirs=()
+for d in ./hosts/*/; do
+  name=$(basename "$d")
+  host_dirs+=("$name")
+done
 
-parted /dev/nvme0n1 --script mklabel gpt
+echo "Available hosts:"
+select selected_host in "${host_dirs[@]}"; do
+  if [[ -n "$selected_host" ]]; then
+    echo "You selected: $selected_host"
+    break
+  else
+    echo "Invalid selection."
+  fi
+done
 
-# EFI 512MB，fat32
-parted /dev/nvme0n1 --script mkpart ESP fat32 1MiB 513MiB
-parted /dev/nvme0n1 --script set 1 boot on
+TARGET_CONFIG="./hosts/$selected_host/hardware-configuration.nix"
 
-# btrfs 513MiB (total - 32GiB)
-TOTAL_SIZE=$(blockdev --getsize64 /dev/nvme0n1)
-SWAP_SIZE=34359738368   # 32 * 1024^3 bytes
+# default variable
+DEVICE="/dev/nvme0n1"
+ESP="${DEVICE}p1"
+ROOT="${DEVICE}p2"
+SWAP="${DEVICE}p3"
+MNT="/mnt"
+
+# clear disk device
+echo
+echo "[1] ⚠️ You are about to wipe all data and repartition the disk: $DEVICE"
+echo "   This will erase all data, including existing systems and files!"
+
+read -rp "ARE YOU SURE TO DO THIS: YES/NO: " confirm1
+if [[ "$confirm1" != "YES" ]]; then
+  echo "cancel"
+  exit 1
+fi
+
+read -rp "!!!! ARE YOU SURE TO DO THIS !!!!: YES/NO: " confirm2
+if [[ "$confirm2" != "YES" ]]; then
+  echo "cancel"
+  exit 1
+fi
+
+echo "start clear $DEVICE..."
+wipefs -a "$DEVICE"
+dd if=/dev/zero of="$DEVICE" bs=1M count=10 status=progress
+
+# make gpt
+parted "$DEVICE" --script mklabel gpt
+
+# EFI 512MiB
+parted "$DEVICE" --script mkpart ESP fat32 1MiB 513MiB
+parted "$DEVICE" --script set 1 boot on
+
+# Btrfs root partition
+TOTAL_SIZE=$(blockdev --getsize64 "$DEVICE")
+SWAP_SIZE=$((32 * 1024 * 1024 * 1024))  # 32GiB
 BTRFS_END=$((TOTAL_SIZE - SWAP_SIZE))
 BTRFS_END_MiB=$((BTRFS_END / 1024 / 1024))
+parted "$DEVICE" --script mkpart primary 513MiB "${BTRFS_END_MiB}MiB"
 
-parted /dev/nvme0n1 --script mkpart primary 513MiB ${BTRFS_END_MiB}MiB
+# Swap
+parted "$DEVICE" --script mkpart primary linux-swap "${BTRFS_END_MiB}MiB" 100%
 
-# swap 32GB
-parted /dev/nvme0n1 --script mkpart primary linux-swap ${BTRFS_END_MiB}MiB 100%
+echo
+echo "[2] Format partitions..."
+mkfs.fat -F32 "$ESP"
+mkfs.btrfs -f "$ROOT"
+mkswap -f "$SWAP"
 
-# mk EFI as FAT32
-mkfs.fat -F 32 /dev/nvme0n1p1
+echo
+echo "[3] Mount and create Btrfs subvolumes..."
+mount "$ROOT" "$MNT"
+btrfs subvolume create "$MNT/root"
+btrfs subvolume create "$MNT/home"
+btrfs subvolume create "$MNT/nixos"
+umount "$MNT"
 
-# mk Btrfs as home
-mkfs.btrfs -f /dev/nvme0n1p2
+echo
+echo "[4] Remount all subvolumes for installation..."
+mount -o compress=zstd,subvol=root "$ROOT" "$MNT"
+mkdir -p "$MNT"/{home,boot,nixos}
+mount -o compress=zstd,subvol=home "$ROOT" "$MNT/home"
+mount -o compress=zstd,noatime,subvol=nixos "$ROOT" "$MNT/nixos"
+mount "$ESP" "$MNT/boot"
+swapon "$SWAP"
 
-# mk swap
-mkswap -f /dev/nvme0n1p3
+echo
+echo "[5] Generate and Overwriting hardware-configuration.nix with fixed UUIDs..."
 
-# mount home to /mnt
-mount /dev/nvme0n1p2 /mnt
+nixos-generate-config --root "$MNT"
 
-# make subvolume
-btrfs subvolume create /mnt/root
-btrfs subvolume create /mnt/home
-btrfs subvolume create /mnt/nixos
+UUID=$(blkid -s UUID -o value "$ROOT")
+SWAP_UUID=$(blkid -s UUID -o value "$SWAP")
+ESP_UUID=$(blkid -s UUID -o value "$ESP")
 
-# for mount children
-umount /mnt
+cp "$MNT/etc/nixos/hardware-configuration.nix" "$TARGET_CONFIG"
+cp -a . "$MNT/nixos"
 
-mount -o compress=zstd,subvol=root /dev/nvme0n1p2 /mnt
+# Replace root UUID
+sed -i "s|device = \".*\";|device = \"/dev/disk/by-uuid/$UUID\";|g" "$TARGET_CONFIG"
+sed -i "s|device = \".*\";|device = \"/dev/disk/by-uuid/$UUID\";|g" "$TARGET_CONFIG"
+sed -i "s|device = \".*\";|device = \"/dev/disk/by-uuid/$UUID\";|g" "$TARGET_CONFIG"
 
-mkdir -p /mnt/{home,nixos,boot}
+# Replace swap UUID
+sed -i "s|device = \".*\";|device = \"/dev/disk/by-uuid/$SWAP_UUID\";|g" "$TARGET_CONFIG"
 
-# mount children
-mount -o compress=zstd,subvol=home /dev/nvme0n1p2 /mnt/home
-mount -o compress=zstd,noatime,subvol=nixos /dev/nvme0n1p2 /mnt/nixos
-mount /dev/nvme0n1p1 /mnt/boot
+# Replace ESP if needed
+sed -i "s|device = \".*\";|device = \"/dev/disk/by-uuid/$ESP_UUID\";|g" "$TARGET_CONFIG"
 
-# make swapon
-swapon /dev/nvme0n1p3
 
-# generate hardware-configuration
-nixos-generate-config --root /mnt
-
-# change this path to nixos/
-cp /mnt/etc/nixos/hardware-configuration.nix ./hosts/desktop/hardware-configuration.nix
-
-# copy current configuration to mnt
-cp ./* /mnt/nixos/
-
-# install nixos using flake
-nixos-install --flake .#desktop --root /mnt --show-trace --option substituters https://mirror.sjtu.edu.cn/nix-channels/store
+echo "********************************************"
+echo "********************************************"
+echo 
+echo "[⚠] please manually check if the following files are correct."
+echo "     $TARGET_CONFIG"
+echo
+echo "Please run after the inspection is completed."
+echo "     nixos-install --flake .#$selected_host --show-trace"
+echo "Then run: "
+echo "     ./rebuild_user.sh"
+echo 
+echo "********************************************"
+echo "********************************************"

@@ -12,6 +12,9 @@
       source = ../../configs/.config/waybar;
       recursive = true;
       force = true;
+      onChange = ''
+        chmod -R 755 "$HOME/.config/waybar/scripts"
+      '';
     };
   };
 }

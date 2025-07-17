@@ -24,7 +24,7 @@
       lib = nixpkgs.lib;
       flakeDir = toString self; # get flake dir_name
 
-      host = "nixos_desktop";
+      host = "desktop";
       paths = { 
         root = "${flakeDir}";
         resources = "${flakeDir}/resources";
