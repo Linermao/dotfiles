@@ -9,17 +9,26 @@
   min-height: 0;
 }
 
+/* Waybar */
 window#waybar {
   background: rgba(21, 18, 27, 0);
   color: #cdd6f4;
 }
 
+/* Tooltip */
 tooltip {
   background: #1e1e2e;
   border-radius: 10px;
   border-width: 2px;
   border-style: solid;
   border-color: #11111b;
+}
+
+/* Workspaces */
+#workspaces {
+  background: #1e1e2e;
+  border-radius: 10px;
+  margin-left: 10px;
 }
 
 #workspaces button {
@@ -50,77 +59,44 @@ tooltip {
   border-radius: 10px;
 }
 
-#language,
-#custom-updates,
-#custom-caffeine,
-#custom-weather,
+/* Center and Right Panel */
 #window,
+#memory,
+#network,
+#pulseaudio,
 #clock,
 #battery,
-#pulseaudio,
-#network,
-#workspaces,
 #tray,
-#backlight {
-  background: #1e1e2e;
-  padding: 0px 10px;
-  margin: 3px 0px;
-  margin-top: 10px;
-  border: 1px solid #181825;
-}
-
-#tray {
-  border-radius: 10px;
-  margin-right: 10px;
-}
-
-#workspaces {
+#custom-power {
+  margin-right: 6px;
   background: #1e1e2e;
   border-radius: 10px;
-  margin-left: 10px;
-  padding-right: 0px;
-  padding-left: 5px;
+  padding: 5px 10px;
 }
 
-#custom-caffeine {
-  color: #89dceb;
-  border-radius: 10px 0px 0px 10px;
-  border-right: 0px;
-  margin-left: 10px;
-}
-
-#custom-language {
-  color: #f38ba8;
-  border-left: 0px;
-  border-right: 0px;
-}
-
-#custom-updates {
-  color: #f5c2e7;
-  border-radius: 10px 0px 0px 10px;
-  border-left: 0px;
-  border-right: 0px;
-}
-
+/* Window */
 #window {
   border-radius: 10px;
   margin-left: 60px;
   margin-right: 60px;
 }
 
+/* Clock */
 #clock {
   color: #fab387;
-  border-radius: 10px 0px 0px 10px;
+  border-radius: 10px;
   margin-left: 5px;
   border-right: 0px;
 }
 
+/* Network */
 #network {
   color: #f9e2af;
   border-left: 0px;
   border-right: 0px;
 }
 
+/* Pulseaudio */
 #pulseaudio {
   color: #89b4fa;
   border-left: 0px;
@@ -129,21 +105,22 @@ tooltip {
 
 #pulseaudio.microphone {
   color: #cba6f7;
-  border-radius: 0px 10px 10px 0px;
+  border-radius: 10px;
   border-left: 0px;
   border-right: 0px;
   margin-right: 5px;
 }
 
+/* Battery */
 #battery {
   color: #a6e3a1;
-  border-radius: 0 10px 10px 0;
+  border-radius: 10px;
   margin-right: 10px;
   border-left: 0px;
 }
 
-#custom-weather {
-  border-radius: 0px 10px 10px 0px;
-  border-right: 0px;
-  margin-left: 0px;
+/* Tray */
+#tray {
+  border-radius: 10px;
+  margin-right: 10px;
 }

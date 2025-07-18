@@ -16,4 +16,16 @@
     __GLX_VENDOR_LIBRARY_NAME = "nvidia";
     LIBVA_DRIVER_NAME = "nvidia";
   };
+
+  hardware.graphics.enable = true;
+  hardware.graphics.enable32Bit = true;
+  
+  environment.systemPackages = with pkgs; [
+    mesa
+    vulkan-tools
+    libGL
+    libglvnd
+    libdrm
+  ];
+
 }

@@ -17,5 +17,6 @@
     nano
     tree
     bottom
+    neofetch
   ];
 }

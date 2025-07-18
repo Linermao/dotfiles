@@ -14,5 +14,8 @@
     ./compiler.nix
     ./code.nix
     ./steam.nix
+    ./screencopy.nix
+    ./obs-studio.nix
+    ./yazi.nix
   ];
 }
