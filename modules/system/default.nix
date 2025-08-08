@@ -13,5 +13,6 @@
     ./users.nix
     ./hyprland.nix
     ./system.nix
+    ./virtualbox.nix
   ];
 }

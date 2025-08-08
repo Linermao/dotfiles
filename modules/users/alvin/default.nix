@@ -23,5 +23,16 @@
     https_proxy = "http://127.0.0.1:7890";
   };
 
+  # fonts
+  home.packages = with pkgs; [
+    noto-fonts
+    noto-fonts-cjk-sans
+    noto-fonts-cjk-serif
+    source-han-sans
+    source-han-serif
+  ];
+
+  fonts.fontconfig.enable = true;
+
   home.stateVersion = "25.05";
 }

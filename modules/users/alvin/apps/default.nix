@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 
 {
   imports = [
@@ -17,5 +17,17 @@
     ./screencopy.nix
     ./obs-studio.nix
     ./yazi.nix
+    ./tracy.nix
+  ];
+
+  # something interesting
+  home.packages = with pkgs; [
+    cowsay
+    fortune-kind
+    fastfetch
+    cmatrix
+    pipes
+    cbonsai
+    cava
   ];
 }
