@@ -13,7 +13,7 @@
 
   home.file = {
     ".config/kitty" = {
-      source = ../configs/.config/kitty;
+      source = ../../configs/.config/kitty;
       recursive = true;
       force = true;
     };

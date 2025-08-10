@@ -20,7 +20,7 @@
 
   home.file = {
     ".config/hypr" = {
-      source = ../../configs/.config/hypr;
+      source = ../../../configs/.config/hypr;
       recursive = true;
       force = true;
     };

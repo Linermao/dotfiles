@@ -9,7 +9,7 @@
 
   home.file = {
     ".config/waybar" = {
-      source = ../../configs/.config/waybar;
+      source = ../../../configs/.config/waybar;
       recursive = true;
       force = true;
       onChange = ''

@@ -2,7 +2,8 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ./../../modules/system
+    ./../../modules/system/common
+    ./../../modules/system/linux
   ];
 
   powerManagement.cpuFreqGovernor = "performance";

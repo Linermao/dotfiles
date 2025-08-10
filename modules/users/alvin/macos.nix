@@ -2,9 +2,10 @@
 
 {
   imports = [
-    ./apps
+    ./apps/common
+    ./apps/macos
   ];
-
+  
   home.file = {
     ".config/nixos/resources" = {
       source = ./resources;
@@ -14,25 +15,14 @@
   };
 
   home.username = "alvin";
-  home.homeDirectory = "/home/alvin";
-  
+  home.homeDirectory = "/Users/alvin";
+
   programs.home-manager.enable = true;
 
   home.sessionVariables = {
     http_proxy = "http://127.0.0.1:7890";
     https_proxy = "http://127.0.0.1:7890";
   };
-
-  # fonts
-  home.packages = with pkgs; [
-    noto-fonts
-    noto-fonts-cjk-sans
-    noto-fonts-cjk-serif
-    source-han-sans
-    source-han-serif
-  ];
-
-  fonts.fontconfig.enable = true;
 
   home.stateVersion = "25.05";
 }

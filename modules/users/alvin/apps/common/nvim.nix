@@ -10,7 +10,7 @@
 
   home.file = {
     ".config/nvim" = {
-      source = ../configs/.config/nvim;
+      source = ../../configs/.config/nvim;
       recursive = true;
       force = true;
     };
