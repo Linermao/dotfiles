@@ -13,6 +13,7 @@
     casks = [
     ];
     masApps = {
+      "WeChat" = 836500024;
     };
     onActivation.cleanup = "zap";
     onActivation.autoUpdate = true;
