@@ -7,7 +7,6 @@
     ./code.nix
     ./compiler.nix
     ./dolphin.nix
-    ./firefox.nix
     ./fonts.nix
     ./kitty.nix
     ./obs-studio.nix

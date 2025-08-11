@@ -13,7 +13,7 @@
         "disk"
       ];
       openssh.authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAzANerpEp/ZYczKFxJcOdzxDEtb4kP101eUZnhAABV8 LinermaoGemail@gmail.com"
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM+N3j3ytRRUXM4+dgLosNhI1KbkWG/2ttOwXodsPADm LinermaoGemail@gmail.com"
       ];
       shell = pkgs.fish;
     };

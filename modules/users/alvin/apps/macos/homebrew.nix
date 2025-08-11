@@ -14,6 +14,7 @@
     ];
     masApps = {
       "WeChat" = 836500024;
+      # "shadowrocket"  = 932747118;
     };
     onActivation.cleanup = "zap";
     onActivation.autoUpdate = true;
