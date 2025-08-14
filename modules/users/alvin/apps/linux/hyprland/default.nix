@@ -4,6 +4,7 @@
   imports = [
     # ./config
     ./hyprland.nix
+    ./hyprlock.nix
     ./rofi.nix
     ./swww.nix
     ./waybar.nix
