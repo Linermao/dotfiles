@@ -10,7 +10,9 @@
     ./sddm.nix
     ./services.nix
     ./sound.nix
+    ./sunshine.nix
     ./system.nix
+    ./tailscale.nix
     ./users.nix
     ./virtualbox.nix
   ];
