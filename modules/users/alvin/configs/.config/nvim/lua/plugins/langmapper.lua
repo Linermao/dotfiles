@@ -10,7 +10,5 @@ return {
       disable_hack_modes = { "i" },
     })
     langmapper.automapping({ global = true, buffer = true })
-  end,
-
-  priority = 10,
+  end
 }

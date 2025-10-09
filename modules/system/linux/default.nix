@@ -3,6 +3,7 @@
 {
   imports = [
     ./boot.nix
+    ./docker.nix
     ./hyprland.nix
     ./input.nix
     ./network.nix
@@ -14,7 +15,7 @@
     ./system.nix
     ./tailscale.nix
     ./users.nix
-    ./virtualbox.nix
+    ./virtual.nix
   ];
 
   environment.sessionVariables = {

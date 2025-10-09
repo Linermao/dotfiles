@@ -7,8 +7,6 @@
 
   wayland.windowManager.hyprland = {
     enable = true;
-    package = null;
-    portalPackage = null;
 
     xwayland = {
       enable = true;
@@ -16,8 +14,10 @@
     };
     # enableNvidiaPatches = false;
     systemd.enable = true;
+    extraConfig = ""; # clear warnings
   };
 
+  # User-specific configuration files
   home.file = {
     ".config/hypr" = {
       source = ../../../configs/.config/hypr;

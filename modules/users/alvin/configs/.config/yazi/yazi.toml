@@ -8,4 +8,35 @@ sort_dir_first = true
 linemode = "size_and_mtime"
 show_hidden = true
 show_symlink = true
-title_format   = "Yazi: {cwd}"
+title_format = "Yazi: {cwd}"
+
+[opener]
+image = [
+  { run = 'loupe "$@"', desc = "Open image files with Loupe" },
+  { run = 'nomacs "$@"', desc = "Open image files with Nomacs" }
+]
+
+video = [
+  { run = 'mpv "$@"', desc = "Open video files with MPV" },
+]
+
+pdf = [
+  { run = 'firefox --new-window "$@"', desc = "Open PDF files with Firefox" },
+]
+
+[open]
+rules = [
+  { name = "*.png", use = "image" },
+  { name = "*.jpg", use = "image" },
+  { name = "*.jpeg", use = "image" },
+  { name = "*.bmp", use = "image" },
+  { name = "*.webp", use = "image" },
+  { name = "*.tiff", use = "image" },
+
+  { name = "*.mp4", use = "video" },
+  { name = "*.mkv", use = "video" },
+  { name = "*.avi", use = "video" },
+  { name = "*.webm", use = "video" },
+
+  { name = "*.pdf", use = "pdf" },
+]

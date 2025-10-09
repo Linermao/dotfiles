@@ -12,6 +12,7 @@
     ./screencopy.nix
     ./steam.nix
     ./tracy.nix
+    ./viewer.nix
   ];
 
   

@@ -1,7 +1,10 @@
 return {
   "folke/snacks.nvim",
   opts = {
-    explorer = { enabled = true },
+    explorer = { 
+      enabled = true 
+    },
+    
     picker = {
       hidden = true,
       ignored = true,
