@@ -5,13 +5,20 @@
   description = "My NixOS flake config";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.05";
     home-manager = { 
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     }; 
 
     hyprland.url = "github:hyprwm/Hyprland";
+    
+    # caelestia
+    caelestia-shell = {
+      url = "github:caelestia-dots/shell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # macOS specific inputs
     nix-darwin = {
@@ -23,26 +30,19 @@
 
   outputs = { self, nixpkgs, home-manager, nix-darwin, nix-homebrew, ... } @inputs:
     let
-      system = "x86_64-linux";
-      pkgs = import nixpkgs {
-        inherit system;
-        config.allowUnfree = true;
-      };
       lib = nixpkgs.lib;
       flakeDir = toString self; # get flake dir_name
-
-      host = "desktop";
       paths = { 
         root = "${flakeDir}";
-        resources = "${flakeDir}/resources";
       };
     in {
-      # ---- Linux NixOS ----
+      # ---- NixOS ----
       nixosConfigurations = {
         desktop = nixpkgs.lib.nixosSystem {
-          inherit system;
+          system = "x86_64-linux";
           specialArgs = {
-            inherit self inputs pkgs host paths;
+            inherit self inputs paths;
+            host = "desktop";
           };
 
           modules = [ 
@@ -82,14 +82,14 @@
         "alvin@desktop" = home-manager.lib.homeManagerConfiguration {
           pkgs = import nixpkgs { system = "x86_64-linux"; config.allowUnfree = true; };
           extraSpecialArgs = { inherit inputs paths; host = "desktop"; };
-          modules = [ ./modules/users/alvin/linux.nix ];
+          modules = [ ./home-manager/alvin/linux ];
         };
 
         # macOS
         "alvin@macbook" = home-manager.lib.homeManagerConfiguration {
           pkgs = import nixpkgs { system = "aarch64-darwin"; config.allowUnfree = true; };
           extraSpecialArgs = { inherit inputs paths; host = "macbook"; };
-          modules = [ ./modules/users/alvin/macos.nix ];
+          modules = [ ./home-manager/alvin/macos ];
         };
       };
     };

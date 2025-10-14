@@ -1,10 +1,32 @@
-{ ... }:
+{ inputs, pkgs, ... }:
 {
   imports = [
-    ./../../modules/system/common
-    ./../../modules/system/macos
+    ./desktop.nix
+    ./nix.nix
+    ./operations.nix
+    ./system.nix
+    ./users.nix
 
     # homebrew
-    ./../../modules/users/alvin/apps/macos/homebrew.nix
+    ./../../home-manager/alvin/apps/macos/homebrew.nix
+  ];
+
+  environment.systemPackages = with pkgs; [
+    # home-manager
+    inputs.home-manager.packages.${pkgs.system}.default
+    
+    # network
+    curl
+    wget
+    nmap
+    tcpdump
+
+    # basic tools
+    git
+    vim
+    nano
+    tree
+    bottom
+    neofetch
   ];
 }

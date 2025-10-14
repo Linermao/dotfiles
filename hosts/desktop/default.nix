@@ -1,10 +1,33 @@
-{ ... }:
+{ inputs, pkgs, ... }:
 {
   imports = [
     ./hardware-configuration.nix
-    ./../../modules/system/common
-    ./../../modules/system/linux
+
+    ./desktop.nix
+    ./nix.nix
+    ./nvidia.nix
+    ./operations.nix
+    ./system.nix
+    ./uses.nix
+    ./virtual.nix
   ];
 
-  powerManagement.cpuFreqGovernor = "performance";
+  environment.systemPackages = with pkgs; [
+    # home-manager
+    inputs.home-manager.packages.${pkgs.system}.default
+
+    # network
+    curl
+    wget
+    nmap
+    tcpdump
+
+    # basic tools
+    git
+    vim
+    nano
+    tree
+    bottom
+    neofetch
+  ];
 }

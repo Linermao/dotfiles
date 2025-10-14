@@ -7,9 +7,9 @@ MIRROR="https://mirror.sjtu.edu.cn/nix-channels/store"
 if [[ $# -ge 1 ]]; then
   USER="$1"
 else
-  echo "[*] No user specified. Detecting available user in ./modules/users/..."
+  echo "[*] No user specified. Detecting available user in ./home-manager/..."
   user_dires=()
-  for d in ./modules/users/*/; do
+  for d in ./home-manager/*/; do
     name=$(basename "$d")
     user_dires+=("$name")
   done
