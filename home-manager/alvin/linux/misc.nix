@@ -30,6 +30,10 @@
 
     # ---- recorder ----
     gpu-screen-recorder
+
+    # ---- brightness controller ----
+    ddcutil
+    brightnessctl
   ];
 
   # ---- icon theme ----

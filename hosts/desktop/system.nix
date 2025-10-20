@@ -5,6 +5,12 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  # ---- i2c bus ----
+  boot.kernelModules = [ "i2c-dev" ];
+  services.udev.extraRules = ''
+    KERNEL=="i2c-[0-9]*", GROUP="i2c", MODE="0660"
+  '';
+
   # ---- services ----
   services.dbus.enable = true;
   services.openssh.enable = true;
