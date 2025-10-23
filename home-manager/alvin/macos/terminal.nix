@@ -30,7 +30,7 @@
   };
   home.file = {
     ".config/kitty" = {
-      source = ./../configs/.config/kitty/linux;
+      source = ./../configs/.config/kitty/macos;
       recursive = true;
       force = true;
     };

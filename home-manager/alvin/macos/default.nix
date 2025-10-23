@@ -9,8 +9,8 @@
   ];
  
   home.file = {
-    "Picture/wallpapers" = {
-      source = ./../wallpapers;
+    "Pictures/wallpapers" = {
+      source = ./../Pictures/wallpapers;
       recursive = true;
       force = true;
     };

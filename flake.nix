@@ -7,10 +7,23 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.05";
+
+    # macOS specific inputs
+    nix-darwin = {
+      url = "github:nix-darwin/nix-darwin/nix-darwin-25.05";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
+    };
+    nix-homebrew.url = "github:zhaofengli/nix-homebrew";
+
+    # home manager
     home-manager = { 
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
-    }; 
+    };
+    home-manager-stable = { 
+      url = "github:nix-community/home-manager/release-25.05";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
+    };
 
     hyprland.url = "github:hyprwm/Hyprland";
     
@@ -19,18 +32,10 @@
       url = "github:caelestia-dots/shell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    # macOS specific inputs
-    nix-darwin = {
-      url = "github:LnL7/nix-darwin";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    nix-homebrew.url = "github:zhaofengli/nix-homebrew";
   };
 
-  outputs = { self, nixpkgs, home-manager, nix-darwin, nix-homebrew, ... } @inputs:
+  outputs = { self, nixpkgs, nixpkgs-stable, home-manager, home-manager-stable, nix-darwin, nix-homebrew, ... } @inputs:
     let
-      lib = nixpkgs.lib;
       flakeDir = toString self; # get flake dir_name
       paths = { 
         root = "${flakeDir}";
@@ -59,6 +64,7 @@
             inherit self inputs paths;
             host = "macbook";
           };
+
           modules = [ 
             ./hosts/macbook
             nix-homebrew.darwinModules.nix-homebrew {
@@ -86,8 +92,8 @@
         };
 
         # macOS
-        "alvin@macbook" = home-manager.lib.homeManagerConfiguration {
-          pkgs = import nixpkgs { system = "aarch64-darwin"; config.allowUnfree = true; };
+        "alvin@macbook" = home-manager-stable.lib.homeManagerConfiguration {
+          pkgs = import nixpkgs-stable { system = "aarch64-darwin"; config.allowUnfree = true; };
           extraSpecialArgs = { inherit inputs paths; host = "macbook"; };
           modules = [ ./home-manager/alvin/macos ];
         };

@@ -8,7 +8,7 @@
     ./users.nix
 
     # homebrew
-    ./../../home-manager/alvin/apps/macos/homebrew.nix
+    ./../../home-manager/alvin/macos/homebrew.nix
   ];
 
   environment.systemPackages = with pkgs; [

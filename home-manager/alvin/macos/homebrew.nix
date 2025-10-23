@@ -16,7 +16,7 @@
       "moonlight"
     ];
     masApps = {
-      "WeChat" = 836500024;
+      # "WeChat" = 836500024;
     };
     onActivation.cleanup = "zap";
     onActivation.autoUpdate = true;

@@ -1,4 +1,4 @@
-{ host, ... }:
+{ host, lib, ... }:
 
 let
   home = "/User/alvin";
