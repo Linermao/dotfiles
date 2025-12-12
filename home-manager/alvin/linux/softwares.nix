@@ -23,6 +23,16 @@
     mpv
     feishin
     playerctl
+
+    # ---- darvinci ----
+    # davinci-resolve
+
+    # ---- blender ----
+    # blender
+
+    # ---- quickemu ----
+    quickemu
+    quickgui
   ];
 
   # ---- obs studio ----

@@ -2,6 +2,7 @@
 
 {
   users.groups.i2c = {};
+  users.groups.nix = {};
 
   users.users = {
     alvin = {
@@ -16,6 +17,7 @@
         "docker"
         "libvirtd"
         "kvm"
+        "nix"
         "i2c"
       ];
       openssh.authorizedKeys.keys = [

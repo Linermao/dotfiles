@@ -15,7 +15,7 @@
     lm_sensors
     pulseaudio
     bluez
-
+    
     # ---- fonts ----
     noto-fonts
     noto-fonts-cjk-sans
@@ -31,9 +31,18 @@
     # ---- recorder ----
     gpu-screen-recorder
 
+    # ---- audio and video ----
+    jellyfin-ffmpeg
+
     # ---- brightness controller ----
     ddcutil
     brightnessctl
+
+    # ---- tigervnc ----
+    tigervnc
+
+    # ---- tig ----
+    tig
   ];
 
   # ---- icon theme ----

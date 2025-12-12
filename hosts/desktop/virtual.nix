@@ -12,6 +12,12 @@
     };
   };
 
+  systemd.services.docker.environment = {
+    HTTP_PROXY = "http://127.0.0.1:7890";
+    HTTPS_PROXY = "http://127.0.0.1:7890";
+    NO_PROXY = "127.0.0.1,localhost";
+  };
+
   ## ---- virtual box ----
   # ----------------------------------
   # virtualisation.virtualbox.host.enable = true;

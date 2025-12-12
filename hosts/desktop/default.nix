@@ -29,5 +29,6 @@
     tree
     bottom
     neofetch
+    unzip
   ];
 }
