@@ -2,6 +2,8 @@
 
 {
   home.packages = with pkgs; [
+    # ---- github -----
+    gh
     # ---- fonts ----
     nerd-fonts.jetbrains-mono
     nerd-fonts.caskaydia-cove

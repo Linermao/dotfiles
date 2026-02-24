@@ -40,7 +40,7 @@
   programs.fish.enable = true;
   home.file = {
     ".config/fish" = {
-      source = ./../configs/.config/fish;
+      source = ./../configs/.config/fish/linux;
       recursive = true;
       force = true;
     };

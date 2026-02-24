@@ -6,6 +6,7 @@
     ./misc.nix
     ./softwares.nix
     ./terminal.nix
+    ./virtual.nix
   ];
  
   home.file = {

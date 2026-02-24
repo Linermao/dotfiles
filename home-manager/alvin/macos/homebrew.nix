@@ -6,6 +6,7 @@
 
   homebrew = {
     enable = true;
+
     brews = [
       "git"
       "mas" # Mac App Store CLI
