@@ -62,10 +62,10 @@
         },
         "idle": {
             "lockBeforeSleep": true,
-            "inhibitWhenAudio": true,
+            "inhibitWhenAudio": false,
             "timeouts": [
                 {
-                    "timeout": 300,
+                    "timeout": 600,
                     "idleAction": "lock"
                 }
             ]
