@@ -161,6 +161,13 @@ NixOS install modes:
 - it is ignored by git
 - rebuilds should keep using path-based flakes so the local file is visible
 
+First boot note for NixOS:
+
+- after `nixos-install`, only the system-side setup is complete
+- the repository is copied into `/nixos`
+- desktop sessions like Hyprland are still provided by Home Manager
+- on the first boot, switch to a TTY such as `Ctrl+Alt+F3`, log in there, run `/nixos/rebuild_user.sh`, and reboot once more before expecting SDDM to launch the final desktop session correctly
+
 ### Rebuild
 
 ```bash

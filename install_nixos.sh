@@ -22,6 +22,7 @@ FORMAT_SWAP=0
 LIST_HOSTS=0
 USE_MIRROR=1
 LAYOUT_MOUNTED=0
+HOST_USERS=()
 
 usage() {
   cat <<'EOF'
@@ -120,6 +121,28 @@ detect_hosts() {
     [[ -f "${meta}" ]] || continue
     if grep -q 'type = "nixos";' "${meta}"; then
       basename "$(dirname "${meta}")"
+    fi
+  done
+}
+
+detect_users_for_host() {
+  local host="$1"
+  local users_dir="${ROOT_DIR}/users"
+  local meta
+
+  for meta in "${users_dir}"/*/meta.nix; do
+    [[ -f "${meta}" ]] || continue
+
+    local user_dir user_name
+    user_dir="$(dirname "${meta}")"
+    user_name="$(basename "${user_dir}")"
+
+    if [[ ! -f "${user_dir}/system/nixos.nix" ]]; then
+      continue
+    fi
+
+    if grep -q "\"${host}\"" "${meta}"; then
+      printf '%s\n' "${user_name}"
     fi
   done
 }
@@ -413,6 +436,33 @@ handle_install_failure() {
   done
 }
 
+configure_local_passwords() {
+  if [[ "${ASSUME_YES}" -eq 1 ]]; then
+    return 0
+  fi
+
+  if ! command -v nixos-enter >/dev/null 2>&1; then
+    echo "[!] nixos-enter is not available, skipping password setup helper."
+    return 0
+  fi
+
+  echo
+  echo "[*] Password setup"
+  echo "[*] SSH keys are already configured for users that define them,"
+  echo "[*] but local login and sudo usually still need passwords."
+  echo
+
+  if confirm "Set the root password now?"; then
+    run_root nixos-enter --root "${MNT}" -c "passwd"
+  fi
+
+  for user_name in "${HOST_USERS[@]}"; do
+    if confirm "Set the password for user '${user_name}' now?"; then
+      run_root nixos-enter --root "${MNT}" -c "passwd ${user_name}"
+    fi
+  done
+}
+
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --mode)
@@ -537,6 +587,9 @@ if [[ ! -f "${ROOT_DIR}/hosts/${HOST}/meta.nix" ]]; then
 fi
 
 HOST_NAME="$(read_host_name "${HOST}")"
+while IFS= read -r user_name; do
+  [[ -n "${user_name}" ]] && HOST_USERS+=("${user_name}")
+done < <(detect_users_for_host "${HOST}")
 
 ensure_empty_mountpoint
 
@@ -577,14 +630,24 @@ if [[ "${USE_MIRROR}" -eq 1 ]]; then
 else
   echo "  Mirror    : disabled"
 fi
+if [[ "${#HOST_USERS[@]}" -gt 0 ]]; then
+  echo "  Users     : ${HOST_USERS[*]}"
+else
+  echo "  Users     : <none detected for this host>"
+fi
 echo
 echo "Updated host-local hardware config:"
 echo "  ${ROOT_DIR}/hosts/${HOST}/hardware-configuration.nix"
+echo "Copied repository into target system:"
+echo "  ${MNT}/nixos"
+echo "After first boot, the same checkout will be available at:"
+echo "  /nixos"
 echo
 echo "Recommended checks before reboot:"
 echo "  1. Review hosts/${HOST}/hardware-configuration.nix"
 echo "  2. Confirm the mounted layout under ${MNT}"
-echo "  3. Keep using path-based flakes for this repo"
+echo "  3. Remember that /nixos is the canonical system-side checkout"
+echo "  4. Keep using path-based flakes for this repo"
 echo
 
 if [[ "${RUN_INSTALL}" == "yes" ]]; then
@@ -593,22 +656,43 @@ if [[ "${RUN_INSTALL}" == "yes" ]]; then
       exit 1
     fi
   fi
+  configure_local_passwords
   echo
   echo "[*] Installation finished."
   echo "[*] Suggested next steps:"
   echo "    1. Reboot into the installed system"
-  echo "    2. Verify networking, mounts, and graphics"
-  echo "    3. Run ${ROOT_DIR}/rebuild.sh ${HOST} switch"
-  echo "    4. Run ${ROOT_DIR}/rebuild_user.sh"
+  echo "    2. Do not expect the desktop session to be ready on the first boot"
+  echo "    3. Your graphical session is managed by Home Manager, so SDDM may not"
+  echo "       have a usable Hyprland session until user-level config is built"
+  echo "    4. Switch to a TTY, for example Ctrl+Alt+F3, and log in there"
+  echo "    5. Verify networking, mounts, graphics, and local login"
+  echo "    6. If you skipped passwords above, set them with:"
+  echo "       sudo passwd"
+  if [[ "${#HOST_USERS[@]}" -gt 0 ]]; then
+    first_user="${HOST_USERS[0]}"
+    echo "       sudo passwd ${first_user}"
+  fi
+  echo "    7. Run /nixos/rebuild.sh ${HOST} switch"
+  if [[ "${#HOST_USERS[@]}" -gt 0 ]]; then
+    echo "    8. Run /nixos/rebuild_user.sh"
+    echo "    9. Reboot again before expecting the graphical session to work normally"
+  else
+    echo "    8. Reboot again after any user-level setup is finished"
+  fi
 else
   echo "[*] nixos-install was skipped."
   echo "[*] Suggested next steps:"
   echo "    1. Review hosts/${HOST}/hardware-configuration.nix"
-  echo "    2. Inspect the mounted target under ${MNT}"
+  echo "    2. Inspect the mounted target under ${MNT}, especially ${MNT}/nixos"
   echo "    3. Run:"
   if [[ "${USE_MIRROR}" -eq 1 ]]; then
     echo "       sudo nixos-install --flake path:${MNT}/nixos#${HOST} --show-trace --option substituters '${MIRROR} ${FALLBACK_SUBSTITUTER}'"
   else
     echo "       sudo nixos-install --flake path:${MNT}/nixos#${HOST} --show-trace"
+  fi
+  echo "    4. After nixos-install, you can set passwords before reboot with:"
+  echo "       sudo nixos-enter --root ${MNT} -c 'passwd'"
+  if [[ "${#HOST_USERS[@]}" -gt 0 ]]; then
+    echo "       sudo nixos-enter --root ${MNT} -c 'passwd ${HOST_USERS[0]}'"
   fi
 fi
