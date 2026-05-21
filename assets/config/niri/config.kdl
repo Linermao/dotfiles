@@ -1,0 +1,211 @@
+spawn-sh-at-startup "clash-verge & for i in $(seq 1 50); do niri msg -j windows | grep -q '\"app_id\":\"Clash-verge\"' && break; sleep 0.2; done; exec kitty --app-id btm --title btm -e btm"
+spawn-sh-at-startup "google-chrome-stable & for i in $(seq 1 50); do niri msg -j windows | grep -Eq '\"app_id\":\"(Google-chrome|google-chrome)\"' && break; sleep 0.2; done; exec splayer"
+
+window-rule {
+    match app-id=r#"^Clash-verge$"#
+    default-column-width { proportion 0.33333; }
+    open-on-workspace "1"
+}
+
+window-rule {
+    match app-id=r#"^btm$"#
+    default-column-width { proportion 0.66667; }
+    open-on-workspace "1"
+}
+
+window-rule {
+    match app-id=r#"^(Google-chrome|google-chrome)$"#
+    default-column-width { proportion 1.00000; }
+    open-on-workspace "2"
+}
+
+window-rule {
+    match app-id=r#"^SPlayer$"#
+    default-column-width { proportion 1.00000; }
+    open-on-workspace "2"
+}
+
+input {
+    keyboard {
+        xkb {
+            layout "us"
+        }
+    }
+
+    touchpad {
+        tap
+        natural-scroll
+        dwt
+    }
+
+    focus-follows-mouse
+}
+
+gestures {
+    hot-corners {
+        off
+    }
+}
+
+layout {
+    gaps 16
+
+    default-column-width {
+        proportion 0.5
+    }
+
+    preset-column-widths {
+        proportion 0.33333
+        proportion 0.5
+        proportion 0.66667
+    }
+
+    center-focused-column "never"
+
+    focus-ring {
+        off
+    }
+    border {
+        width 4
+        active-gradient from="#cba6f7" to="#89b4fa"
+        inactive-gradient from="#585b70" to="#585b70"
+    }
+    shadow {
+        on
+        draw-behind-window true
+        softness 30
+        spread 5
+        offset x=0 y=5
+        color "#00000070"
+    }
+}
+
+screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
+
+animations {
+    // Slow down all animations by this factor. Values below 1 speed them up instead.
+    // slowdown 3.0
+    window-resize {
+        off
+    }
+    window-open {
+        duration-ms 100
+        curve "ease-out-expo"
+    }
+    window-close {
+        duration-ms 100
+        curve "ease-out-quad"
+    }
+}
+
+workspace "1"
+workspace "2"
+workspace "3"
+workspace "4"
+workspace "5"
+workspace "6"
+workspace "7"
+workspace "8"
+workspace "9"
+
+layer-rule {
+    match namespace="^qs-overview-backdrop$"
+    place-within-backdrop true
+}
+
+hotkey-overlay {
+    skip-at-startup
+}
+
+binds {
+    Mod+Shift+Slash { show-hotkey-overlay; }
+
+    Mod+E hotkey-overlay-title="Open a File Manager: yazi" { spawn "kitty" "-e" "yazi"; }
+    Mod+T hotkey-overlay-title="Open a Terminal: kitty" { spawn "kitty"; }
+    Mod+L hotkey-overlay-title="Lock the Screen: DankMaterialShell" { spawn "dms" "ipc" "lock" "lock"; }
+    Mod+A hotkey-overlay-title="Open App Launcher: DankMaterialShell" { spawn "dms" "ipc" "spotlight" "toggle"; }
+
+    Mod+B hotkey-overlay-title="Open a Browser: google-chrome-stable" { spawn "google-chrome-stable"; }
+    
+    Mod+Q { close-window; }
+    Ctrl+Alt+Delete  { quit; }
+
+    Mod+Left  { focus-column-left; }
+    Mod+Right { focus-column-right; }
+
+    // Example volume keys mappings for PipeWire & WirePlumber.
+    // The allow-when-locked=true property makes them work even when the session is locked.
+    // Using spawn-sh allows to pass multiple arguments together with the command.
+    // "-l 1.0" limits the volume to 100%.
+    XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.05+ -l 1.0"; }
+    XF86AudioLowerVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.05-"; }
+    XF86AudioMute        allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"; }
+    XF86AudioMicMute     allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"; }
+
+    // Example media keys mapping using playerctl.
+    // This will work with any MPRIS-enabled media player.
+    XF86AudioPlay        allow-when-locked=true { spawn-sh "playerctl play-pause"; }
+    XF86AudioStop        allow-when-locked=true { spawn-sh "playerctl stop"; }
+    XF86AudioPrev        allow-when-locked=true { spawn-sh "playerctl previous"; }
+    XF86AudioNext        allow-when-locked=true { spawn-sh "playerctl next"; }
+    XF86MonBrightnessUp  allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "+10%"; }
+    XF86MonBrightnessDown allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "10%-"; }
+
+    // Mod+WheelScrollUp cooldown-ms=150 { focus-workspace-up; }
+    // Mod+WheelScrollDown cooldown-ms=150 { focus-workspace-down; }
+    Mod+WheelScrollLeft { focus-column-left; }
+    Mod+WheelScrollRight { focus-column-right; }
+    Mod+WheelScrollUp { focus-column-left; }
+    Mod+WheelScrollDown { focus-column-right; }
+
+    Mod+Home { focus-column-first; }
+    Mod+End  { focus-column-last; }
+
+    Mod+1 { focus-workspace "1"; }
+    Mod+2 { focus-workspace "2"; }
+    Mod+3 { focus-workspace "3"; }
+    Mod+4 { focus-workspace "4"; }
+    Mod+5 { focus-workspace "5"; }
+    Mod+6 { focus-workspace "6"; }
+    Mod+7 { focus-workspace "7"; }
+    Mod+8 { focus-workspace "8"; }
+    Mod+9 { focus-workspace "9"; }
+    Ctrl+Alt+1 { move-column-to-workspace 1; }
+    Ctrl+Alt+2 { move-column-to-workspace 2; }
+    Ctrl+Alt+3 { move-column-to-workspace 3; }
+    Ctrl+Alt+4 { move-column-to-workspace 4; }
+    Ctrl+Alt+5 { move-column-to-workspace 5; }
+    Ctrl+Alt+6 { move-column-to-workspace 6; }
+    Ctrl+Alt+7 { move-column-to-workspace 7; }
+    Ctrl+Alt+8 { move-column-to-workspace 8; }
+    Ctrl+Alt+9 { move-column-to-workspace 9; }
+
+    Shift+Mod+Home { move-column-to-first; }
+    Shift+Mod+End  { move-column-to-last; }
+    Mod+BracketLeft  { consume-or-expel-window-left; }
+    Mod+BracketRight { consume-or-expel-window-right; }
+
+    Mod+J  { consume-window-into-column; }
+    Mod+K { expel-window-from-column; }
+
+    Mod+R { switch-preset-column-width; }
+    Mod+M { toggle-overview; }
+    Mod+F { maximize-column; }
+    Mod+Shift+F { fullscreen-window; }
+    Mod+C { center-column; }
+
+    Mod+Minus { set-column-width "-10%"; }
+    Mod+Equal { set-column-width "+10%"; }
+
+    Mod+V { toggle-window-floating; }
+
+    Ctrl+Alt+A { screenshot; }
+    Ctrl+Alt+F { screenshot-screen; }
+    Ctrl+Alt+W { screenshot-window; }
+
+    Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
+}
+
+include "dms/outputs.kdl"
+
+include "dms/windowrules.kdl"

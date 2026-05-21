@@ -1,0 +1,6 @@
+/dotctl/target/
+/result
+/result-*
+/host/*
+.qmlls.ini
+.codex
