@@ -81,7 +81,7 @@ Builds and switches the standalone Home Manager configuration exported as `homeC
 `--impure` is used because some linked config assets are referenced from the local working tree.
 
 ```sh
-nix flake lock --update-input nixpkgs-unstable
+nix flake update nixpkgs-unstable
 ```
 
 Updates only the `nixpkgs-unstable` input in `flake.lock`, leaving the primary stable `nixpkgs` input unchanged.

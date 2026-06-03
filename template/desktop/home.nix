@@ -28,7 +28,8 @@ in
     cava
     bottom
     gitui
-
+    clock-rs
+    
     # ---- media ----
     mpv
     loupe
@@ -45,6 +46,8 @@ in
 
     # ---- misc tools ----
     jq
+    gh
+    ripgrep
 
     # ---- fonts ----
     fontpreview

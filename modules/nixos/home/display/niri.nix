@@ -33,15 +33,12 @@ in
     enableAudioWavelength = true;
     enableCalendarEvents = false;
     enableClipboardPaste = false;
-
-    settings = {
-      theme = "dark";
-    };
-
-    session = {
-      isLightMode = false;
-    };
   };
+
+  systemd.user.services.dms.Service.Environment = [
+    # Quickshell currently crashes in the fcitx Qt6 input context on Qt 6.11.
+    "QT_IM_MODULE=compose"
+  ];
 
   home.sessionVariables = {
     ELECTRON_OZONE_PLATFORM_HINT = "auto";

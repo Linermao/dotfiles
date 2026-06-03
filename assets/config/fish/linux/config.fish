@@ -6,6 +6,14 @@ if type -q starship
     set -gx STARSHIP_CONFIG $XDG_CONFIG_HOME/starship/starship.toml
 end
 
+# git auth
+if command -q gh
+    set -l token (gh auth token 2>/dev/null)
+
+    if test -n "$token"
+        set -gx NIX_CONFIG "access-tokens = github.com=$token"
+    end
+end
 
 # fzf 
 if type -q fzf

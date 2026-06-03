@@ -1,7 +1,3 @@
-# A TOML linter such as https://taplo.tamasfe.dev/ can use this schema to validate your config.
-# If you encounter any issues, please make an issue at https://github.com/yazi-rs/schemas.
-"$schema" = "https://yazi-rs.github.io/schemas/yazi.json"
-
 [mgr]
 sort_by = "natural"
 sort_dir_first = true
@@ -26,17 +22,17 @@ pdf = [
 
 [open]
 rules = [
-  { name = "*.png", use = "image" },
-  { name = "*.jpg", use = "image" },
-  { name = "*.jpeg", use = "image" },
-  { name = "*.bmp", use = "image" },
-  { name = "*.webp", use = "image" },
-  { name = "*.tiff", use = "image" },
+  { url = "*.png", use = "image" },
+  { url = "*.jpg", use = "image" },
+  { url = "*.jpeg", use = "image" },
+  { url = "*.bmp", use = "image" },
+  { url = "*.webp", use = "image" },
+  { url = "*.tiff", use = "image" },
 
-  { name = "*.mp4", use = "video" },
-  { name = "*.mkv", use = "video" },
-  { name = "*.avi", use = "video" },
-  { name = "*.webm", use = "video" },
+  { url = "*.mp4", use = "video" },
+  { url = "*.mkv", use = "video" },
+  { url = "*.avi", use = "video" },
+  { url = "*.webm", use = "video" },
 
-  { name = "*.pdf", use = "pdf" },
+  { url = "*.pdf", use = "pdf" },
 ]

@@ -23,9 +23,9 @@
 
     home = {
       ai = [ "codex" ];
-      coding = [ "nvim" "vscode" ];
+      coding = [ "git" "nvim" "vscode" ];
       fileManager = [ "yazi" ];
-      programs = [ "clash-verge-rev" "chrome" "quickemu" "obs-studio" "splayer"];
+      programs = [ "clash-verge-rev" "chrome" "quickemu" "obs-studio" "splayer" "motrix"];
       terminal = "kitty";
     };
   };

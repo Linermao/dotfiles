@@ -12,7 +12,10 @@ let
   };
 in
 {
-  programs.yazi.enable = true;
+  programs.yazi = {
+    enable = true;
+    shellWrapperName = "y";
+  };
 
   xdg.configFile = mkOutOfStoreConfigTree {
     sourceDir = "${hostConfig.repoRoot}/assets/config/yazi";

@@ -2,7 +2,7 @@ spawn-sh-at-startup "clash-verge & for i in $(seq 1 50); do niri msg -j windows 
 spawn-sh-at-startup "google-chrome-stable & for i in $(seq 1 50); do niri msg -j windows | grep -Eq '\"app_id\":\"(Google-chrome|google-chrome)\"' && break; sleep 0.2; done; exec splayer"
 
 window-rule {
-    match app-id=r#"^Clash-verge$"#
+    match app-id=r#"^clash-verge$"#
     default-column-width { proportion 0.33333; }
     open-on-workspace "1"
 }
@@ -110,6 +110,11 @@ workspace "9"
 
 layer-rule {
     match namespace="^qs-overview-backdrop$"
+    place-within-backdrop true
+}
+
+layer-rule {
+    match namespace="^dms:blurwallpaper$"
     place-within-backdrop true
 }
 
