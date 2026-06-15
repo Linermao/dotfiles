@@ -1,6 +1,6 @@
 {
-  repoRoot = "/home/alvin/dotfiles";
-  hostName = "desktop";
+  repoRoot = "/home/asterinas/dotfiles";
+  hostName = "workstation";
   platform = "x86_64-linux";
   cpu = "intel";
   stateVersion = "25.05";
@@ -16,26 +16,48 @@
     system = {
       display = "niri";
       gpu = {
-        devices = [ "nvidia" ];
-        mode = "nvidia";
+        devices = [
+          "intel"
+          "nvidia"
+        ];
+        mode = "nvidia-intel";
       };
       programs = [ "steam" ];
-      servers = [ "dbus" "tailscale" "sunshine" "openssh"];
-      virtualizations = [ "docker" "libvirt" ];
+      servers = [
+        "dbus"
+        "tailscale"
+        "sunshine"
+        "openssh"
+      ];
+      virtualizations = [
+        "docker"
+        "libvirt"
+      ];
     };
 
     home = {
       ai = [ "codex" ];
-      coding = [ "git" "nvim" "vscode" ];
+      coding = [
+        "git"
+        "nvim"
+        "vscode"
+      ];
       fileManager = [ "yazi" ];
-      programs = [ "clash-verge-rev" "chrome" "quickemu" "obs-studio" "splayer" "motrix"];
+      programs = [
+        "clash-verge-rev"
+        "chrome"
+        "quickemu"
+        "obs-studio"
+        "splayer"
+        "motrix"
+      ];
       terminal = "kitty";
     };
   };
 
   user = {
-    name = "alvin";
-    homeDirectory = "/home/alvin";
+    name = "asterinas";
+    homeDirectory = "/home/asterinas";
     isNormalUser = true;
     sshKeys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM+N3j3ytRRUXM4+dgLosNhI1KbkWG/2ttOwXodsPADm LinermaoGemail@gmail.com"

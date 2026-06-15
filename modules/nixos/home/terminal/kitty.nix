@@ -15,7 +15,7 @@ in
   programs.kitty.enable = true;
 
   xdg.configFile = mkOutOfStoreConfigTree {
-    sourceDir = "${hostConfig.repoRoot}/assets/config/kitty/linux";
+    sourceDir = root + "/assets/config/kitty/linux";
     targetPrefix = "kitty";
   };
 }

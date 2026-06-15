@@ -18,7 +18,7 @@ in
   };
 
   xdg.configFile = mkOutOfStoreConfigTree {
-    sourceDir = "${hostConfig.repoRoot}/assets/config/yazi";
+    sourceDir = root + "/assets/config/yazi";
     targetPrefix = "yazi";
   };
 }

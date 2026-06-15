@@ -42,19 +42,48 @@
         system = hostConfig.platform;
 
         specialArgs = {
-          inherit hostConfig inputs paths root;
+          inherit
+            hostConfig
+            inputs
+            paths
+            root
+            ;
         };
 
-        modules = [ ./host/system.nix ];
+        modules = [
+          ./host/system.nix
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.extraSpecialArgs = {
+              inherit
+                hostConfig
+                inputs
+                paths
+                root
+                pkgsUnstable
+                ;
+            };
+            home-manager.users.${hostConfig.user.name} = import ./host/home.nix;
+          }
+        ];
       };
 
       homeConfigurations."${hostConfig.user.name}@${hostConfig.hostName}" =
-        home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-          extraSpecialArgs = {
-            inherit hostConfig inputs paths root pkgsUnstable;
+        home-manager.lib.homeManagerConfiguration
+          {
+            inherit pkgs;
+            extraSpecialArgs = {
+              inherit
+                hostConfig
+                inputs
+                paths
+                root
+                pkgsUnstable
+                ;
+            };
+            modules = [ ./host/home.nix ];
           };
-          modules = [ ./host/home.nix ];
-        };
     };
 }

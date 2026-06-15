@@ -15,12 +15,6 @@ in
     enable32Bit = true;
   };
 
-  environment.sessionVariables = {
-    GBM_BACKEND = "nvidia-drm";
-    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-    LIBVA_DRIVER_NAME = "nvidia";
-  };
-
   environment.etc = lib.mkIf (displaySelection == "niri") {
     "nvidia/nvidia-application-profiles-rc.d/50-limit-free-buffer-pool-in-wayland-compositors.json".text =
       builtins.toJSON {
@@ -46,6 +40,4 @@ in
         ];
       };
   };
-
-  services.xserver.videoDrivers = [ "nvidia" ];
 }

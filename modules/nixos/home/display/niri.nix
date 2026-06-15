@@ -49,7 +49,7 @@ in
   ];
 
   xdg.configFile = mkOutOfStoreConfigTree {
-    sourceDir = "${hostConfig.repoRoot}/assets/config/niri";
+    sourceDir = root + "/assets/config/niri";
     targetPrefix = "niri";
   };
 }

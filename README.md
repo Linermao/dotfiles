@@ -32,7 +32,10 @@ Example:
 modules = {
   system = {
     display = "niri";
-    gpu = "nvidia";
+    gpu = {
+      devices = [ "nvidia" ];
+      mode = "nvidia";
+    };
     programs = [ "steam" ];
     servers = [ "dbus" "tailscale" "sunshine" "openssh" ];
     virtualizations = [ "docker" "libvirt" ];
@@ -72,13 +75,14 @@ sudo nixos-rebuild switch --flake "path:$PWD#<hostName>"
 ```
 
 Builds and switches the NixOS system configuration exported as `nixosConfigurations.desktop`.
+Home Manager is integrated into the NixOS configuration, so this command also switches the user Home Manager configuration from `host/home.nix`.
 
 ```sh
-home-manager switch --impure --flake "path:$PWD#<userName>@<hostName>"
+home-manager switch --flake "path:$PWD#<userName>@<hostName>"
 ```
 
 Builds and switches the standalone Home Manager configuration exported as `homeConfigurations.<userName>@<hostName>`.
-`--impure` is used because some linked config assets are referenced from the local working tree.
+This output is kept as a fallback or debugging entrypoint; the normal workflow is `nixos-rebuild switch`.
 
 ```sh
 nix flake update nixpkgs-unstable
