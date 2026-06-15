@@ -6,12 +6,6 @@
   stateVersion = "25.05";
   allowUnfree = true;
 
-  proxy = {
-    http = "http://127.0.0.1:7890";
-    https = "http://127.0.0.1:7890";
-    noProxy = "127.0.0.1,localhost";
-  };
-
   modules = {
     system = {
       display = "niri";
@@ -22,7 +16,10 @@
         ];
         mode = "nvidia-intel";
       };
-      programs = [ "steam" ];
+      programs = [
+        "steam"
+        "clash-verge-rev"
+      ];
       servers = [
         "dbus"
         "tailscale"
@@ -44,7 +41,6 @@
       ];
       fileManager = [ "yazi" ];
       programs = [
-        "clash-verge-rev"
         "chrome"
         "quickemu"
         "obs-studio"

@@ -6,12 +6,6 @@
   stateVersion = "25.05";
   allowUnfree = true;
 
-  proxy = {
-    http = "http://127.0.0.1:7890";
-    https = "http://127.0.0.1:7890";
-    noProxy = "127.0.0.1,localhost";
-  };
-
   modules = {
     system = {
       display = "niri";
@@ -19,16 +13,37 @@
         devices = [ "nvidia" ];
         mode = "nvidia";
       };
-      programs = [ "steam" ];
-      servers = [ "dbus" "tailscale" "sunshine" "openssh"];
-      virtualizations = [ "docker" "libvirt" ];
+      programs = [
+        "steam"
+        "clash-verge-rev"
+      ];
+      servers = [
+        "dbus"
+        "tailscale"
+        "sunshine"
+        "openssh"
+      ];
+      virtualizations = [
+        "docker"
+        "libvirt"
+      ];
     };
 
     home = {
       ai = [ "codex" ];
-      coding = [ "git" "nvim" "vscode" ];
+      coding = [
+        "git"
+        "nvim"
+        "vscode"
+      ];
       fileManager = [ "yazi" ];
-      programs = [ "clash-verge-rev" "chrome" "quickemu" "obs-studio" "splayer" "motrix"];
+      programs = [
+        "chrome"
+        "quickemu"
+        "obs-studio"
+        "splayer"
+        "motrix"
+      ];
       terminal = "kitty";
     };
   };

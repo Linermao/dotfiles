@@ -5,12 +5,7 @@
 }:
 
 let
-  proxy = hostConfig.proxy or { };
-  dockerProxyEnv = lib.filterAttrs (_: value: value != null && value != "") {
-    HTTP_PROXY = proxy.http or null;
-    HTTPS_PROXY = proxy.https or null;
-    NO_PROXY = proxy.noProxy or null;
-  };
+  gpuDevices = hostConfig.modules.system.gpu.devices or [ ];
 in
 {
   virtualisation.docker = {
@@ -23,7 +18,5 @@ in
     };
   };
 
-  hardware.nvidia-container-toolkit.enable = (hostConfig.modules.system.gpu or null) == "nvidia";
-
-  systemd.services.docker.environment = dockerProxyEnv;
+  hardware.nvidia-container-toolkit.enable = lib.elem "nvidia" gpuDevices;
 }

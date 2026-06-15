@@ -46,6 +46,7 @@
             hostConfig
             inputs
             paths
+            pkgsUnstable
             root
             ;
         };

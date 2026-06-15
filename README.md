@@ -92,6 +92,8 @@ Updates only the `nixpkgs-unstable` input in `flake.lock`, leaving the primary s
 
 `<hostName>` comes from `hostConfig.hostName` in `host/meta.nix`. `<userName>@<hostName>` comes from `user.name` and `hostName`.
 
+> Tips: if fetch go tools timeouted, try export GOPROXY=https://goproxy.cn,direct
+
 ## Template: Niri With DMS
 
 `template/desktop/` is a desktop configuration template for a Niri + Dank Material Shell Wayland setup. It is not active by itself; copy or adapt it when creating `host/`.
