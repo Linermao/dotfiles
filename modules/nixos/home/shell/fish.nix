@@ -15,7 +15,7 @@ in
   programs.fish.enable = true;
 
   xdg.configFile = mkOutOfStoreConfigTree {
-    sourceDir = root + "/assets/config/fish/linux";
+    sourceDir = hostConfig.repoRoot + "/assets/config/fish/linux";
     targetPrefix = "fish/conf.d";
   };
 }

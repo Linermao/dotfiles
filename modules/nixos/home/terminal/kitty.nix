@@ -2,6 +2,7 @@
   config,
   hostConfig,
   lib,
+  pkgs,
   root,
   ...
 }:
@@ -12,10 +13,10 @@ let
   };
 in
 {
-  programs.kitty.enable = true;
+  home.packages = [ pkgs.kitty ];
 
   xdg.configFile = mkOutOfStoreConfigTree {
-    sourceDir = root + "/assets/config/kitty/linux";
+    sourceDir = hostConfig.repoRoot + "/assets/config/kitty/linux";
     targetPrefix = "kitty";
   };
 }

@@ -39,6 +39,7 @@ in
   };
 
   hardware.bluetooth.enable = true;
+  hardware.i2c.enable = true;
   services.upower.enable = true;
   powerManagement.cpuFreqGovernor = "performance";
 

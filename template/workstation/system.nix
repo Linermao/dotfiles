@@ -39,11 +39,13 @@ in
   };
 
   hardware.bluetooth.enable = true;
+  hardware.i2c.enable = true;
   services.upower.enable = true;
   powerManagement.cpuFreqGovernor = "performance";
 
   networking.hostName = hostConfig.hostName;
   networking.networkmanager.enable = true;
+  networking.firewall.checkReversePath = "loose";
   networking.nameservers = [
     "223.5.5.5"
     "8.8.8.8"

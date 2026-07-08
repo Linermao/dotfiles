@@ -77,10 +77,6 @@ sudo nixos-rebuild switch --flake "path:$PWD#<hostName>"
 Builds and switches the NixOS system configuration exported as `nixosConfigurations.desktop`.
 Home Manager is integrated into the NixOS configuration, so this command also switches the user Home Manager configuration from `host/home.nix`.
 
-```sh
-home-manager switch --flake "path:$PWD#<userName>@<hostName>"
-```
-
 Builds and switches the standalone Home Manager configuration exported as `homeConfigurations.<userName>@<hostName>`.
 This output is kept as a fallback or debugging entrypoint; the normal workflow is `nixos-rebuild switch`.
 

@@ -52,6 +52,10 @@
     name = "alvin";
     homeDirectory = "/home/alvin";
     isNormalUser = true;
+    git = {
+      name = "Linermao";
+      email = "LinermaoGemail@gmail.com";
+    };
     sshKeys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM+N3j3ytRRUXM4+dgLosNhI1KbkWG/2ttOwXodsPADm LinermaoGemail@gmail.com"
     ];
@@ -59,6 +63,7 @@
     extraGroups = [
       "video"
       "render"
+      "i2c"
       "docker"
       "libvirtd"
     ];

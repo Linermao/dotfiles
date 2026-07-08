@@ -16,11 +16,7 @@ in
   home.packages = [ pkgs.neovim ];
 
   xdg.configFile = mkOutOfStoreConfigTree {
-    sourceDir = root + "/assets/config/nvim";
+    sourceDir = hostConfig.repoRoot + "/assets/config/nvim";
     targetPrefix = "nvim";
-    exclude = [
-      ".gitignore"
-      "README.md"
-    ];
   };
 }
