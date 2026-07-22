@@ -39,7 +39,7 @@ input {
         dwt
     }
 
-    focus-follows-mouse
+    focus-follows-mouse max-scroll-amount="50%"
 }
 
 gestures {
@@ -61,8 +61,8 @@ layout {
         proportion 0.66667
     }
 
-    center-focused-column "never"
-
+    center-focused-column "on-overflow"
+    
     focus-ring {
         off
     }

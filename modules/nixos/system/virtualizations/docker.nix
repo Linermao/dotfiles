@@ -4,9 +4,6 @@
   ...
 }:
 
-let
-  gpuDevices = hostConfig.modules.system.gpu.devices or [ ];
-in
 {
   virtualisation.docker = {
     enable = true;
@@ -17,6 +14,4 @@ in
       ];
     };
   };
-
-  hardware.nvidia-container-toolkit.enable = lib.elem "nvidia" gpuDevices;
 }

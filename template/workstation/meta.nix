@@ -44,6 +44,7 @@
         "chrome"
         "quickemu"
         "obs-studio"
+        "moonlight"
         "splayer"
         "motrix"
       ];

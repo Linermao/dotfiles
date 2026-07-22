@@ -82,6 +82,7 @@ This output is kept as a fallback or debugging entrypoint; the normal workflow i
 
 ```sh
 nix flake update nixpkgs-unstable
+home-manager switch --flake "path:$PWD#<hostName>"
 ```
 
 Updates only the `nixpkgs-unstable` input in `flake.lock`, leaving the primary stable `nixpkgs` input unchanged.
