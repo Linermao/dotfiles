@@ -14,4 +14,8 @@
       "--accept-routes=false"
     ];
   };
+
+  networking.firewall.trustedInterfaces = [
+    "tailscale0"
+  ];
 }

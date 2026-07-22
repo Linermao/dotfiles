@@ -20,7 +20,7 @@ let
 
   groupSelections = {
     display = toList (systemSelections.display or [ ]);
-    gpu = (systemSelections.gpu.devices or [ ]) ++ [ "mode" ];
+    gpu = [ "device" ];
     programs = toList (systemSelections.programs or [ ]);
     servers = toList (systemSelections.servers or [ ]);
     virtualizations = toList (systemSelections.virtualizations or [ ]);

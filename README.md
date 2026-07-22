@@ -32,10 +32,7 @@ Example:
 modules = {
   system = {
     display = "niri";
-    gpu = {
-      devices = [ "nvidia" ];
-      mode = "nvidia";
-    };
+    gpu.device = "nvidia";
     programs = [ "steam" ];
     servers = [ "dbus" "tailscale" "sunshine" "openssh" ];
     virtualizations = [ "docker" "libvirt" ];
@@ -72,6 +69,9 @@ System services and core system capabilities should not be moved to unstable by 
 
 ```sh
 sudo nixos-rebuild switch --flake "path:$PWD#<hostName>"
+
+# Gpu Passthrough
+sudo nixos-rebuild boot --flake "path:$PWD#<hostName>"
 ```
 
 Builds and switches the NixOS system configuration exported as `nixosConfigurations.desktop`.
@@ -82,7 +82,7 @@ This output is kept as a fallback or debugging entrypoint; the normal workflow i
 
 ```sh
 nix flake update nixpkgs-unstable
-home-manager switch --flake "path:$PWD#<hostName>"
+home-manager switch --flake "path:$PWD#<userName>@<hostName>"
 ```
 
 Updates only the `nixpkgs-unstable` input in `flake.lock`, leaving the primary stable `nixpkgs` input unchanged.

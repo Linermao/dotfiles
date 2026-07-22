@@ -7,7 +7,7 @@
 
 let
   cpu = hostConfig.cpu;
-  gpuDevices = hostConfig.modules.system.gpu.devices or [ ];
+  gpuDevice = hostConfig.modules.system.gpu.device;
   kvmModule =
     if cpu == "amd" then
       "kvm-amd"
@@ -17,11 +17,16 @@ let
       throw "Unsupported hostConfig.cpu `${cpu}` for libvirt nested virtualization";
   qemuVulkanLibraryPath = lib.makeLibraryPath [ pkgs.vulkan-loader ];
   preferredVulkanIcd =
-    if builtins.elem "intel" gpuDevices then
+    if
+      builtins.elem gpuDevice [
+        "intel"
+        "nvidia-intel"
+      ]
+    then
       "/run/opengl-driver/share/vulkan/icd.d/intel_icd.x86_64.json"
-    else if builtins.elem "amd" gpuDevices then
+    else if gpuDevice == "amd" then
       "/run/opengl-driver/share/vulkan/icd.d/radeon_icd.x86_64.json"
-    else if builtins.elem "nvidia" gpuDevices then
+    else if gpuDevice == "nvidia" then
       "/run/opengl-driver/share/vulkan/icd.d/nvidia_icd.json"
     else
       null;
@@ -51,13 +56,12 @@ in
 
   # virglrenderer's Venus path dlopens libvulkan.so at runtime, so the
   # libvirtd-managed QEMU process needs an explicit loader path and ICD view.
-  systemd.services.libvirtd.environment =
-    {
-      LD_LIBRARY_PATH = "/run/opengl-driver/lib:${qemuVulkanLibraryPath}";
-    }
-    // lib.optionalAttrs (preferredVulkanIcd != null) {
-      VK_ICD_FILENAMES = preferredVulkanIcd;
-    };
+  systemd.services.libvirtd.environment = {
+    LD_LIBRARY_PATH = "/run/opengl-driver/lib:${qemuVulkanLibraryPath}";
+  }
+  // lib.optionalAttrs (preferredVulkanIcd != null) {
+    VK_ICD_FILENAMES = preferredVulkanIcd;
+  };
 
   # Make UEFI firmware visible to virt-manager and prepare the host for
   # virgl/virtio-gpu-gl based guests and local display access.
