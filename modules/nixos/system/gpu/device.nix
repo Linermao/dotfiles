@@ -1,14 +1,18 @@
 {
+  config,
   hostConfig,
+  lib,
   pkgs,
   ...
 }:
 
 let
-  gpuDevice = hostConfig.modules.system.gpu.device;
+  gpu = hostConfig.modules.system.gpu;
+  gpuDevice = gpu.device;
+  cudaSupport = gpu.cuda or false;
   devices = {
     nvidia = {
-      nixpkgs.config.cudaSupport = true;
+      nixpkgs.config.cudaSupport = cudaSupport;
 
       hardware.nvidia = {
         modesetting.enable = true;
@@ -21,7 +25,7 @@ let
         enable32Bit = true;
       };
 
-      environment.sessionVariables = {
+      environment.sessionVariables = lib.mkIf config.hardware.nvidia.modesetting.enable {
         GBM_BACKEND = "nvidia-drm";
         __GLX_VENDOR_LIBRARY_NAME = "nvidia";
         LIBVA_DRIVER_NAME = "nvidia";
@@ -50,7 +54,7 @@ let
     };
 
     nvidia-intel = {
-      nixpkgs.config.cudaSupport = true;
+      nixpkgs.config.cudaSupport = cudaSupport;
 
       hardware.nvidia = {
         modesetting.enable = true;
@@ -70,7 +74,7 @@ let
         ];
       };
 
-      environment.sessionVariables = {
+      environment.sessionVariables = lib.mkIf config.hardware.nvidia.modesetting.enable {
         GBM_BACKEND = "nvidia-drm";
         __GLX_VENDOR_LIBRARY_NAME = "nvidia";
       };

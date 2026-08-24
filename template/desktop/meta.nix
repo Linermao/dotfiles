@@ -9,7 +9,10 @@
   modules = {
     system = {
       display = "niri";
-      gpu.device = "nvidia";
+      gpu = {
+        device = "nvidia";
+        cuda = true;
+      };
       programs = [
         "steam"
         "clash-verge-rev"

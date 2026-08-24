@@ -2,6 +2,7 @@
   hostConfig,
   lib,
   pkgs,
+  pkgsUnstable,
   ...
 }:
 
@@ -15,6 +16,7 @@ let
       "kvm-intel"
     else
       throw "Unsupported hostConfig.cpu `${cpu}` for libvirt nested virtualization";
+  qemuPackage = pkgsUnstable.qemu;
   qemuVulkanLibraryPath = lib.makeLibraryPath [ pkgs.vulkan-loader ];
   preferredVulkanIcd =
     if
@@ -37,7 +39,7 @@ in
     enable = true;
     extraConfig = "uri_default = \"qemu:///system\"";
     qemu = {
-      package = pkgs.qemu;
+      package = qemuPackage;
       swtpm.enable = true;
       vhostUserPackages = [ pkgs.virtiofsd ];
     };
@@ -45,7 +47,7 @@ in
 
   environment.systemPackages = with pkgs; [
     libvirt
-    qemu
+    qemuPackage
     virt-viewer
     virglrenderer
     vulkan-loader
@@ -66,7 +68,7 @@ in
   # Make UEFI firmware visible to virt-manager and prepare the host for
   # virgl/virtio-gpu-gl based guests and local display access.
   systemd.tmpfiles.rules = [
-    "L+ /var/lib/qemu/firmware - - - - ${pkgs.qemu}/share/qemu/firmware"
+    "L+ /var/lib/qemu/firmware - - - - ${qemuPackage}/share/qemu/firmware"
   ];
 
   boot.kernelModules = [

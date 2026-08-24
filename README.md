@@ -32,7 +32,10 @@ Example:
 modules = {
   system = {
     display = "niri";
-    gpu.device = "nvidia";
+    gpu = {
+      device = "nvidia";
+      cuda = false;
+    };
     programs = [ "steam" ];
     servers = [ "dbus" "tailscale" "sunshine" "openssh" ];
     virtualizations = [ "docker" "libvirt" ];

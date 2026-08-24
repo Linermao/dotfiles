@@ -6,7 +6,7 @@
 }:
 
 let
-  cfg = hostConfig.virtualisation.gpuPassthrough;
+  cfg = hostConfig.modules.system.gpu.passthrough;
   vmName = cfg.vmName;
   pciIds = cfg.pciIds;
   vfioPciIds = lib.concatStringsSep "," pciIds;
@@ -20,28 +20,28 @@ in
     }
     {
       assertion = pciIds != [ ];
-      message = "hostConfig.virtualisation.gpuPassthrough.pciIds must not be empty.";
+      message = "hostConfig.modules.system.gpu.passthrough.pciIds must not be empty.";
     }
     {
       assertion = vmName != "";
-      message = "hostConfig.virtualisation.gpuPassthrough.vmName must not be empty.";
+      message = "hostConfig.modules.system.gpu.passthrough.vmName must not be empty.";
     }
   ];
 
   # The normal desktop remains the parent configuration. This specialisation
-  # claims the complete NVIDIA device in the initrd, boots without a graphical
-  # target, and starts the already-defined libvirt guest.
+  # keeps the same Linux desktop and user environment, but claims the complete
+  # NVIDIA device in the initrd and starts the already-defined libvirt guest.
   specialisation."vfio-win11" = {
     inheritParentConfig = true;
 
     configuration = {
       system.nixos.tags = [ "vfio-win11" ];
-      systemd.defaultUnit = "multi-user.target";
 
-      programs.niri.enable = lib.mkForce false;
-      programs.dank-material-shell.greeter.enable = lib.mkForce false;
-      services.xserver.videoDrivers = lib.mkForce [ ];
-      xdg.portal.enable = lib.mkForce false;
+      # The parent is configured for Intel + NVIDIA. In this boot mode Linux
+      # keeps the Intel GPU and its complete graphical session, while NVIDIA is
+      # reserved for the guest. Disabling NVIDIA modesetting also makes the GPU
+      # module omit its NVIDIA-specific session variables in this mode.
+      services.xserver.videoDrivers = lib.mkForce [ "modesetting" ];
 
       hardware.nvidia = {
         modesetting.enable = lib.mkForce false;
@@ -68,6 +68,10 @@ in
           "nvidia_uvm"
         ];
       };
+
+      # Sunshine remains available on the Linux desktop in both boot modes.
+      # With NVIDIA assigned to VFIO, force the Intel Quick Sync encoder.
+      services.sunshine.settings.encoder = lib.mkForce "quicksync";
 
       systemd.services."start-${vmName}" = {
         description = "Start the ${vmName} libvirt guest";
