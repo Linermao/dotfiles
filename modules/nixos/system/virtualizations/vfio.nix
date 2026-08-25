@@ -73,11 +73,15 @@ in
       # With NVIDIA assigned to VFIO, force the Intel Quick Sync encoder.
       services.sunshine.settings.encoder = lib.mkForce "quicksync";
 
-      systemd.services."start-${vmName}" = {
-        description = "Start the ${vmName} libvirt guest";
-        wantedBy = [ "multi-user.target" ];
-        requires = [ "libvirtd.service" ];
-        after = [ "libvirtd.service" ];
+      systemd.user.services."start-${vmName}" = {
+        description = "Start the ${vmName} libvirt guest after graphical login";
+
+        wantedBy = [ "graphical-session.target" ];
+        partOf = [ "graphical-session.target" ];
+
+        # Wait until the graphical login starts PipeWire before launching the VM.
+        wants = [ "pipewire.socket" ];
+        after = [ "pipewire.socket" ];
 
         environment.LIBVIRT_DEFAULT_URI = "qemu:///system";
         serviceConfig = {
