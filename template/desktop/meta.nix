@@ -66,6 +66,7 @@
       "i2c"
       "docker"
       "libvirtd"
+      "input"
     ];
   };
 }

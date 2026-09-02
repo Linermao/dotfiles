@@ -79,4 +79,9 @@ in
   boot.extraModprobeConfig = ''
     options ${kvmModule} nested=1
   '';
+
+  # Allow virtual machines on virbr0 to use the host's TUN proxy.
+  networking.firewall.trustedInterfaces = [
+    "virbr0"
+  ];
 }
