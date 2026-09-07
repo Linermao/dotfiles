@@ -17,10 +17,11 @@ in
 {
   imports = [
     inputs.dms.nixosModules.greeter
+    inputs.dank-greeter.nixosModules.default
   ];
 
   programs.niri.enable = true;
-  programs.dank-material-shell.greeter = {
+  programs.dms-greeter = {
     enable = true;
     compositor.name = "niri";
   };

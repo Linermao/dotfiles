@@ -50,6 +50,10 @@ in
     "8.8.8.8"
   ];
 
+  # gh auth token.
+  nix.settings.access-tokens = [
+    "github.com=ghp_xxxxxxxxxxxxxxxxx"
+  ];
   nix.settings.experimental-features = [
     "nix-command"
     "flakes"
