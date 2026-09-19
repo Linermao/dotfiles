@@ -2,13 +2,15 @@
 
 ## Purpose
 
-This repository is a single-user, single-machine-oriented dotfiles and NixOS setup.
+This repository is a single-user dotfiles and NixOS setup. It is organized around one current NixOS host and also carries one executable MacBook reference configuration.
 
 The long-term workflow is:
 
 1. Clone the repository onto a new machine.
 2. Adjust `host/meta.nix` and any required hardware facts under `host/`.
 3. Run installation or rebuild commands from the repository root flake.
+
+For macOS, copy the MacBook template into `host/` and run the configuration exposed by the same repository root flake. The MacBook configuration is intentionally limited to macOS personalization and machine policy.
 
 The repository itself stores shared config assets, reusable optional modules, host templates, and resolver logic.
 It does not aim to become a long-lived multi-host inventory.
@@ -22,6 +24,7 @@ It does not aim to become a long-lived multi-host inventory.
 - Keep the repository organized around a single current host, not a multi-host inventory.
 - Prefer resolver-driven imports derived from `host/meta.nix` over hand-maintained import lists for optional modules.
 - Keep the repository root as the only flake entrypoint.
+- Keep the MacBook template self-contained under `template/macbook/`; copy it to `host/` for activation and do not route it through the NixOS capability resolvers.
 - Allow a separate `nixpkgs-unstable` input for a small number of fast-moving home-side leaf packages when needed.
 - Keep system modules on the primary stable `nixpkgs` input unless there is a clear reason to do otherwise.
 
@@ -75,7 +78,7 @@ The repository root `flake.nix` reads this directory and exports the matching Ni
 
 Starter files for creating or refreshing the generated current-host shape.
 
-Templates are not active host configuration by themselves. The active configuration remains under `host/`, and the root `flake.nix` reads `host/` directly.
+Templates are not active host configuration by themselves. The active configuration remains under `host/`, and the root `flake.nix` reads `host/meta.nix` to select NixOS or nix-darwin. The MacBook template contains fixed personalization rather than optional capability selections, so it does not use `modules/` or a resolver.
 
 ## Generated Host Contract
 
@@ -150,6 +153,7 @@ That means:
 - Prefer small host files, but allow `host/system.nix` and `host/home.nix` to carry the mandatory baseline that always applies to the current machine.
 - When optional system modules need machine-specific baseline values, prefer exposing them from `host/system.nix` through module arguments instead of bloating `host/meta.nix`.
 - Before implementing functionality, keep file and path names consistent with the structure defined here.
+- Keep `template/macbook/` focused on macOS personalization. Do not add Homebrew, application installation, Home Manager, or Darwin resolver layers unless explicitly requested.
 - Use `pkgsUnstable` only for isolated home-side leaf packages such as fast-moving CLI or GUI tools.
 - Do not move system services or core system capabilities to `nixpkgs-unstable` by default.
 - When a home module depends on `pkgsUnstable`, ensure every active Home Manager entrypoint receives `pkgsUnstable` via `extraSpecialArgs`. If a NixOS-integrated Home Manager path is added later, wire it there as well as in standalone `homeConfigurations`.

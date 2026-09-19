@@ -1,17 +1,18 @@
-# My NixOS Dotfiles
+# My NixOS and macOS Dotfiles
 
-This is a single-user, single-machine NixOS dotfiles repository.
+This is a single-user dotfiles repository centered on one current NixOS host, with an additional executable MacBook reference configuration.
 
-The main idea is to keep one flake entrypoint at the repository root, place the current machine configuration under `host/`, keep reusable capability modules under `modules/`, and store shared application config assets under `assets/`. `host/meta.nix` declares machine metadata and module selections, while the resolvers turn those selections into concrete NixOS and Home Manager imports.
+The repository keeps one flake entrypoint at the root. The current machine lives under `host/`, reusable NixOS capabilities live under `modules/`, and reference configurations live under `template/`. The root flake reads `host/meta.nix` and dispatches to NixOS or nix-darwin according to its `platform`.
 
 ## Project Layout
 
-- `flake.nix`: the only flake entrypoint. It reads `host/meta.nix`, `host/system.nix`, and `host/home.nix`.
+- `flake.nix`: the only flake entrypoint. It reads `host/meta.nix` and registers either the NixOS or nix-darwin output for the current host.
 - `host/`: the current machine configuration directory. Users are expected to create this directory themselves.
 - `modules/nixos/system/`: optional NixOS system modules and the system resolver.
 - `modules/nixos/home/`: optional Home Manager modules and the home resolver.
 - `assets/config/`: shared application configuration linked or imported by Home Manager modules.
 - `template/desktop/`: a reference desktop template, currently built around Niri + Dank Material Shell.
+- `template/macbook/`: a nix-darwin reference template for macOS personalization; copy it to `host/` before use.
 
 The `host/` directory must contain four required files:
 
