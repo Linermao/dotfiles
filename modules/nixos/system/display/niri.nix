@@ -16,7 +16,6 @@ let
 in
 {
   imports = [
-    inputs.dms.nixosModules.greeter
     inputs.dank-greeter.nixosModules.default
   ];
 
