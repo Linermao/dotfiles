@@ -62,6 +62,7 @@
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF1jVC4XzXmkqS3NdN6v6kECJ46Yvs0IN5HTmaRgZOAS LinermaoGemail@gmail.com"
     ];
     shell = "fish";
+    loginShell = "bashInteractive";
     extraGroups = [
       "video"
       "render"

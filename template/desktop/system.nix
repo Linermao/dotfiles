@@ -77,13 +77,15 @@ in
     extraGroups = [
       "networkmanager"
       "wheel"
-    ]
-    ++ (user.extraGroups or [ ]);
+    ] ++ (user.extraGroups or [ ]);
+
     openssh.authorizedKeys.keys = user.sshKeys or [ ];
-    shell = pkgs.${user.shell};
+
+    shell = pkgs.${user.loginShell or user.shell};
   };
 
   programs.${user.shell}.enable = true;
+  programs.nix-ld.enable = true;
 
   environment.systemPackages = with pkgs; [
     inputs.home-manager.packages.${pkgs.stdenv.hostPlatform.system}.default
