@@ -1,9 +1,9 @@
-{ pkgs, ... }:
+{ pkgsUnstable, ... }:
 
 {
   programs.clash-verge = {
     enable = true;
-    package = pkgs.clash-verge-rev;
+    package = pkgsUnstable.clash-verge-rev;
     serviceMode = true;
     autoStart = true;
     tunMode = true;
